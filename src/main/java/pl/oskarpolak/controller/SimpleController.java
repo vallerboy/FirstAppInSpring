@@ -2,11 +2,14 @@ package pl.oskarpolak.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.oskarpolak.model.Email;
+
+import javax.validation.Valid;
 
 /**
  * Created by OskarPraca on 2017-02-18.
@@ -42,7 +45,10 @@ public class SimpleController {
     }
 
     @RequestMapping(value = "/newform", method = RequestMethod.POST)
-    public String newFormGet(@ModelAttribute Email email){
+    public String newFormGet (@ModelAttribute("emailClass") @Valid Email emailClass, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "newform";
+        }
         return "resultEmail";
     }
 

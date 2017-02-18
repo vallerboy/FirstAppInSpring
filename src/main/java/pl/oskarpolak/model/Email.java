@@ -1,12 +1,25 @@
 package pl.oskarpolak.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * Created by OskarPraca on 2017-02-18.
  */
 
 public class Email {
 
+
+    private int id;
+
+
+    @Size(min = 4, max = 50, message = "Email musi być od {min} do {max}")
+    @NotNull(message = "Email nie może być pusty")
+  //  @Pattern(regexp = "asdasdasdas", message = "Hasła się nie zgadzają")
     private String email;
+
+    @NotNull(message = "Wiadomość nie może być pusta")
+    @Size(min = 1, message = "Wiadomość musi być dłuższa!")
     private String message;
 
     public Email() { }
