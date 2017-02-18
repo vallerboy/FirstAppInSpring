@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pierwsza aplikacja</title>
+</head>
+<body>
+<center>
+    <b><span th:text=" 'Witaj, ' + ${name}"></span></b>
+    <p th:if="${isBanned}"><h1>JESTES ZBANOWANY!</h1></p>
+
+
+    <form action="/send" method="POST">
+
+        Wiadomość : <input type="text" name="text"/> <br/>
+        E-mail : <input type="email" name="email"/> <br/>
+        <input type="submit" value="Wyślij"/>
+
+    </form>
+
+</center>
+</body>
+</html>
