@@ -1,13 +1,13 @@
 package pl.oskarpolak.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import pl.oskarpolak.UserRepository;
 import pl.oskarpolak.model.Email;
+import pl.oskarpolak.model.User;
 
 import javax.validation.Valid;
 
@@ -17,6 +17,9 @@ import javax.validation.Valid;
 
 @Controller
 public class SimpleController {
+
+    @Autowired
+    UserRepository userRepository;
 
     @RequestMapping("/")
     public String index(Model model){
@@ -31,6 +34,22 @@ public class SimpleController {
         model.addAttribute("email", email);
         return "result";
     }
+
+    @RequestMapping(value = "/dodajuser/{nazwa}", method = RequestMethod.GET)
+    @ResponseBody
+    public String dodajUser(@PathVariable("nazwa") String name){
+        return "Witaj, " + name + " !";
+    }
+
+    @RequestMapping(value = "/dodajuser/{nazwa}", method = RequestMethod.POST)
+    @ResponseBody
+    public String dodajUserPost(@PathVariable("nazwa") String name){
+        return "Witaj, " + name + " !";
+    }
+
+
+
+
 
     @RequestMapping(value = "/send", method = RequestMethod.GET)
     public String sendGet(Model model){
@@ -51,5 +70,25 @@ public class SimpleController {
         }
         return "resultEmail";
     }
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(Model model){
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+
+    @RequestMapping(value = "/testsql", method = RequestMethod.GET)
+    @ResponseBody
+    public String test(){
+        User user = userRepository.findByUsername("siema");
+        return " " + user.toString();
+    }
+
+
+
+
+
 
 }
