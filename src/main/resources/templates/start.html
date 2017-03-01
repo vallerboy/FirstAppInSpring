@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org/">
+<html lang="en" xmlns:th="http://thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
-    <title>Pierwsza aplikacja</title>
+    <title>Dashboard</title>
 </head>
 <body>
 <center>
     <b><span th:text=" 'Witaj, ' + ${name}"></span></b>
-    <p th:if="${isBanned}"><h1>JESTES ZBANOWANY!</h1></p>
-
-
-    <form action="/send" method="POST">
-
-        Wiadomość : <input type="text" name="text"/> <br/>
-        E-mail : <input type="email" name="email"/> <br/>
-        <input type="submit" value="Wyślij"/>
-
+    <br>
+    <span sec:authorize="hasAuthority('admin')">Jesteś adminem :></span>
+    <br>
+    <form action="#" th:action="@{/logout}" method="get">
+        <input type="submit" value="Wyloguj">
     </form>
+
+
+
 
 </center>
 </body>

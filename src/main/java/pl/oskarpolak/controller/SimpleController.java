@@ -1,6 +1,11 @@
 package pl.oskarpolak.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,7 +14,10 @@ import pl.oskarpolak.UserRepository;
 import pl.oskarpolak.model.Email;
 import pl.oskarpolak.model.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Collection;
 
 /**
  * Created by OskarPraca on 2017-02-18.
@@ -25,6 +33,12 @@ public class SimpleController {
     public String index(Model model){
         model.addAttribute("name", "Oskar");
         model.addAttribute("isBanned", false);
+
+        Collection<SimpleGrantedAuthority> simpleGrantedAuthorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        for(SimpleGrantedAuthority authority : simpleGrantedAuthorities){
+            System.out.println("Masz autoryzacje: " + authority);
+        }
+
         return "start";
     }
 
@@ -86,6 +100,34 @@ public class SimpleController {
         return " " + user.toString();
     }
 
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request, HttpServletResponse response, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String register(Model model){
+        model.addAttribute("user", new User());
+        return "register";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String registerPost(@ModelAttribute User user, Model model){
+        User userLocal = userRepository.findByUsername(user.getUsername());
+        if(userLocal == null){
+            user.setPassword(new ShaPasswordEncoder().encodePassword(user.getPassword(), null));
+            userRepository.save(user);
+            model.addAttribute("registred", true);
+        }
+        model.addAttribute("user", new User());
+        return "register";
+    }
 
 
 
