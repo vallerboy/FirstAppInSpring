@@ -1,20 +1,27 @@
 package pl.oskarpolak.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 
 /**
  * Created by OskarPraca on 2017-02-28.
  */
+@XmlRootElement(name = "User")
+@XmlAccessorType(XmlAccessType.NONE)
 @Entity()
 public class User {
 
+    @XmlAttribute
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
 
+    @XmlElement
     private String username;
+    @XmlElement
     private String password;
+    @XmlElement
     private String role;
 
 

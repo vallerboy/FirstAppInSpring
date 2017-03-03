@@ -111,6 +111,12 @@ public class SimpleController {
         return "login";
     }
 
+
+    @RequestMapping("/admin")
+    public String admin(){
+        return "start";
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register(Model model){
         model.addAttribute("user", new User());

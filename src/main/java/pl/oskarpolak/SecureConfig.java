@@ -24,8 +24,11 @@ public class SecureConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+
+
                 .authorizeRequests()
                     .antMatchers("/register").permitAll()
+                    .antMatchers("/api/**").permitAll()
                     .antMatchers("/admin").hasAuthority("ADMIN")
                     .anyRequest().authenticated()
                 .and()
@@ -37,7 +40,10 @@ public class SecureConfig extends WebSecurityConfigurerAdapter{
                     .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/login")
-                    .permitAll();
+                    .permitAll()
+                .and()
+                    .antMatcher("/api/**").csrf().disable();
+
     }
 
     @Autowired
