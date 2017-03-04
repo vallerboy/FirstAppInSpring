@@ -8,11 +8,13 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import pl.oskarpolak.UserRepository;
 import pl.oskarpolak.model.User;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Collections;
 
 /**
  * Created by OskarPraca on 2017-03-03.
@@ -105,6 +107,28 @@ public class APIController {
 
         javaMailSender.send(mail);
         return new ResponseEntity(HttpStatus.OK);
+    }
+    /////
+
+    @RequestMapping(value = "/api/testget", method = RequestMethod.GET)
+    @ResponseBody
+    public String testGet()  {
+        RestTemplate restTemplate = new RestTemplate();
+//        User user = restTemplate.getForObject
+//                ("http://localhost:8090/api/user/oski", User.class);
+//
+        User user1 = new User();
+        user1.setRole("SUPERADMIN");
+        user1.setUsername("adminek");
+        user1.setPassword("jakieshaslo");
+
+
+
+         restTemplate.postForEntity("http://localhost:8090/api/user",
+                user1, User.class, Collections.emptyMap());
+
+
+        return user1.toString();
     }
 
 }

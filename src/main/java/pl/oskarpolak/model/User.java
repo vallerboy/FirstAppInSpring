@@ -18,6 +18,7 @@ public class User {
 
 
     @XmlElement
+    @Column(name = "user_name")
     private String username;
     @XmlElement
     private String password;
