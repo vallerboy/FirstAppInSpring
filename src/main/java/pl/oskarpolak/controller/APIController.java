@@ -105,6 +105,8 @@ public class APIController {
             e.printStackTrace();
         }
 
+
+
         javaMailSender.send(mail);
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "User")
 @XmlAccessorType(XmlAccessType.NONE)
-@Entity()
+@Entity
 public class User {
 
     @XmlAttribute
@@ -18,7 +18,6 @@ public class User {
 
 
     @XmlElement
-    @Column(name = "user_name")
     private String username;
     @XmlElement
     private String password;
