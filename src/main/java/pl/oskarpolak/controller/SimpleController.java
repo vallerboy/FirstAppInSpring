@@ -1,7 +1,6 @@
 package pl.oskarpolak.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -96,8 +95,8 @@ public class SimpleController {
     @RequestMapping(value = "/testsql", method = RequestMethod.GET)
     @ResponseBody
     public String test(){
-        User user = userRepository.findByUsername("siema");
-        return " " + user.toString();
+       // User user = userRepository.findByUsername("siema");
+        return " " ;
     }
 
 
@@ -125,12 +124,12 @@ public class SimpleController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerPost(@ModelAttribute User user, Model model){
-        User userLocal = userRepository.findByUsername(user.getUsername());
-        if(userLocal == null){
-            user.setPassword(new ShaPasswordEncoder().encodePassword(user.getPassword(), null));
-            userRepository.save(user);
-            model.addAttribute("registred", true);
-        }
+        //User userLocal = userRepository.findByUsername(user.getUsername());
+//        if(userLocal == null){
+//            user.setPassword(new ShaPasswordEncoder().encodePassword(user.getPassword(), null));
+//            userRepository.save(user);
+//            model.addAttribute("registred", true);
+//        }
         model.addAttribute("user", new User());
         return "register";
     }
