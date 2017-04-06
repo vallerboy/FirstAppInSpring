@@ -1,6 +1,8 @@
 package pl.oskarpolak.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -30,26 +32,27 @@ public class SQLController {
     public String test(){
         //Page<User> users = userRepository.findByIdGreaterThan(5, new PageRequest(0, 5, new Sort("username")));
 
-        // SELECT * FROM user WHERE username = 'oski';
-        // ResultSet (key:value, key:value);
-        // User user = new User();
-        // user.setUsername(resultSet.get("username"));
-        // user.setPassword(resultSet.get("password"));
 
-//        StringBuilder builder = new StringBuilder();
-//        for(User user : users.getContent()) {
-//          builder.append(user.toString() + "<br>");
-//        }
-//
-//        builder.append("<br><br>");
-//
-//        builder.append("Wszystkie strony: " + users.getTotalPages() + "<br>");
-//        builder.append("Wszystkie elementy: " + users.getTotalElements() + "<br>");
-//        builder.append("Ma następną stronę?: " + users.hasNext() + "<br>");
-//
-//        users.nextPageable();
-        User user = userRepository.findById(3);
-        return user.toString();
+
+
+        Page<User> userPage  = userRepository.findByIdGreaterThan(1, new PageRequest(1,5));
+
+           StringBuilder builder = new StringBuilder();
+
+        for(User user : userPage.getContent()) {
+          builder.append(user.toString() + "<br>");
+        }
+
+        builder.append("<br><br>");
+
+        builder.append("Wszystkie strony: " + userPage.getTotalPages() + "<br>");
+        builder.append("Wszystkie elementy: " + userPage.getTotalElements() + "<br>");
+        builder.append("Ma następną stronę?: " + userPage.hasNext() + "<br>");
+
+        userPage.nextPageable();
+
+
+        return builder.toString();
     }
     @Autowired
     private JavaMailSender javaMailSender;
